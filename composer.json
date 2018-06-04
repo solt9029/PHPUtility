@@ -1,0 +1,19 @@
+{
+    "name": "solt9029/php-utility",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kenshi Shiode",
+            "email": "atemu1212@yahoo.co.jp"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Solt9029\\": "src"
+        }
+    },
+    "include-path": ["src/"]
+}
