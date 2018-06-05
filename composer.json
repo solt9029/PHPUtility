@@ -19,6 +19,6 @@
     },
     "include-path": ["src/"],
     "scripts": {
-        "test": "phpunit test\\"
+        "phpunit": "phpunit"
     }
 }
