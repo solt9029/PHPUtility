@@ -86,15 +86,15 @@ class Utility {
       $other_line_indexes[] = $index;
     }
 
-    // 鋭角三角形または直角三角形の場合
-    if (pow($lines[$max_line_index], 2) <= pow($lines[$other_line_indexes[0]], 2) + pow($lines[$other_line_indexes[1]], 2)) {
-      $circle = $this->getCirclePassingThreePositions($positions);
-      $radius = $circle['radius'];
-      $center_position = $circle['center_position'];
-    } else { // 鈍角三角形の場合 
+    // 鈍角三角形または直角三角形の場合
+    if (pow($lines[$max_line_index], 2) >= pow($lines[$other_line_indexes[0]], 2) + pow($lines[$other_line_indexes[1]], 2)) {
       $radius = (float)$lines[$max_line_index] / 2.0;
       $center_position[0] = ($positions[$max_line_index][0] + $positions[($max_line_index + 1) % 3][0]) / 2.0;
       $center_position[1] = ($positions[$max_line_index][1] + $positions[($max_line_index + 1) % 3][1]) / 2.0;
+    } else { // 鋭角三角形の場合
+      $circle = $this->getCirclePassingThreePositions($positions);
+      $radius = $circle['radius'];
+      $center_position = $circle['center_position'];
     }
     return ['center_position' => $center_position, 'radius' => $radius];
   }
