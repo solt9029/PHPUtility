@@ -4,7 +4,7 @@ namespace Solt9029;
 class Utility {
   // 引数：$positionsは任意の数の座標
   // 返値：全ての点を含む最小円の半径と中心点
-  public function getCircleContainingAllPositions($positions) {
+  public static function getCircleContainingAllPositions($positions) {
     $center_position = [];
     $radius = 0;
 
@@ -12,16 +12,16 @@ class Utility {
       $radius = 0;
       $center_position = $positions[0];
     } else if (count($positions) === 2) {
-      $radius = $this->dist($positions) / 2.0;
+      $radius = self::dist($positions) / 2.0;
       $center_positions = [(float)($positions[0][0] + $positions[1][0]) / 2.0, (float)($positions[0][1] + $positions[1][1]) / 2.0];
     } else {
       for ($first_index = 0; $first_index < count($positions); $first_index++) {
         for ($second_index = $first_index + 1; $second_index < count($positions); $second_index++) {
           for ($third_index = $second_index + 1; $third_index < count($positions); $third_index++) {
-            $circle = $this->getCircleContainingThreePositions([$positions[$first_index], $positions[$second_index], $positions[$third_index]]);
+            $circle = self::getCircleContainingThreePositions([$positions[$first_index], $positions[$second_index], $positions[$third_index]]);
             $is_containing_all_positions = true;
             for ($index = 0; $index < count($positions); $index++) {
-              if (!$this->isWithinCircle($circle['center_position'], $circle['radius'], $positions[$index])) {
+              if (!self::isWithinCircle($circle['center_position'], $circle['radius'], $positions[$index])) {
                 $is_containing_all_positions = false;
                 break;
               }
@@ -40,8 +40,8 @@ class Utility {
   }
 
   // 返値：点が指定した円に含まれるかどうか（boolean）
-  public function isWithinCircle($center_position, $radius, $target_position) {
-    if ($this->dist([$target_position, $center_position]) <= $radius) {
+  public static function isWithinCircle($center_position, $radius, $target_position) {
+    if (self::dist([$target_position, $center_position]) <= $radius) {
       return true;
     }
     return false;
@@ -49,7 +49,7 @@ class Utility {
 
   // 引数：$positionsは3点の座標
   // 返値：3点を通る最小円の半径と中心点
-  public function getCirclePassingThreePositions($positions) {
+  public static function getCirclePassingThreePositions($positions) {
     $center_positions = [];
     $radius = 0;
 
@@ -58,18 +58,18 @@ class Utility {
       / 2.0;
     $center_position[0] = (float)($positions[0][0] + $positions[1][0]) / 2.0 + $t * (float)($positions[1][1] - $positions[0][1]);
     $center_position[1] = (float)($positions[0][1] + $positions[1][1]) / 2.0 - $t * (float)($positions[1][0] - $positions[0][0]);
-    $radius = $this->dist([$positions[0], $center_position]);
+    $radius = self::dist([$positions[0], $center_position]);
 
     return ['center_position' => $center_position, 'radius' => $radius];
   }
 
   // 引数：$positionsは3点の座標
   // 返値：3点を含む最小円の半径と中心点
-  public function getCircleContainingThreePositions($positions) {
+  public static function getCircleContainingThreePositions($positions) {
     $center_positions = [];
     $radius = 0;
 
-    $lines = [$this->dist([$positions[0], $positions[1]]), $this->dist([$positions[1], $positions[2]]), $this->dist([$positions[2], $positions[0]])];
+    $lines = [self::dist([$positions[0], $positions[1]]), self::dist([$positions[1], $positions[2]]), self::dist([$positions[2], $positions[0]])];
 
     $max_line_index = 0;
     for ($index = 1; $index < count($lines); $index++) {
@@ -92,7 +92,7 @@ class Utility {
       $center_position[0] = ($positions[$max_line_index][0] + $positions[($max_line_index + 1) % 3][0]) / 2.0;
       $center_position[1] = ($positions[$max_line_index][1] + $positions[($max_line_index + 1) % 3][1]) / 2.0;
     } else { // 鋭角三角形の場合
-      $circle = $this->getCirclePassingThreePositions($positions);
+      $circle = self::getCirclePassingThreePositions($positions);
       $radius = $circle['radius'];
       $center_position = $circle['center_position'];
     }
@@ -101,7 +101,7 @@ class Utility {
 
   // 引数：$positionsは2点の座標
   // 返値：距離
-  public function dist($positions) {
+  public static function dist($positions) {
     $x_dist = abs($positions[1][0] - $positions[0][0]);
     $y_dist = abs($positions[1][1] - $positions[0][1]);
     return sqrt(pow($x_dist, 2) + pow($y_dist, 2));
@@ -110,16 +110,16 @@ class Utility {
   // 引数：$dpiは1インチ当たりのドット数，$precisionは計測誤差（度），
   // $distanceは目からディスプレイまでの距離（cm），$flickは固視微動（度），
   // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
-  public function getFixationCount($dpi, $precision, $distance, $flick, $min_duration, $filename) {
-    $fixations = $this->getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename);
+  public static function getFixationCount($dpi, $precision, $distance, $flick, $min_duration, $filename) {
+    $fixations = self::getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename);
     return count($fixations);
   }
 
   // 引数：$dpiは1インチ当たりのドット数，$precisionは計測誤差（度），
   // $distanceは目からディスプレイまでの距離（cm），$flickは固視微動（度），
   // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
-  public function getInitialFixation($dpi, $precision, $distance, $flick, $min_duration, $filename) {
-    $fixations = $this->getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename);
+  public static function getInitialFixation($dpi, $precision, $distance, $flick, $min_duration, $filename) {
+    $fixations = self::getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename);
     if (count($fixations) === 0) {
       return null;
     }
@@ -129,7 +129,7 @@ class Utility {
   // 引数：$dpiは1インチ当たりのドット数，$precisionは計測誤差（度），
   // $distanceは目からディスプレイまでの距離（cm），$flickは固視微動（度），
   // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
-  public function getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename) {
+  public static function getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename) {
     $dpc = $dpi / 2.54; // 1センチ当たりのドット数
     $precision_error_range_cm = $distance * tan(deg2rad($precision)); // 計測誤差範囲（cm）
     $flick_range_cm = $distance * tan(deg2rad($flick)); // 固視微動範囲（cm）
@@ -154,14 +154,14 @@ class Utility {
       $recording_stack = [];
       for ($second_index = $first_index; $second_index < count($recordings); $second_index++) {
         $recording_stack[] = $recordings[$second_index];
-        $circle = $this->getCircleContainingAllPositions($recording_stack);
+        $circle = self::getCircleContainingAllPositions($recording_stack);
     
         // 範囲外になった場合
         if ($circle['radius'] > $range_px) {
           array_pop($recording_stack);
           $duration = $recording_stack[count($recording_stack) - 1][2] - $recording_stack[0][2];
           if ($duration > MIN_DURATION) {
-            $circle = $this->getCircleContainingAllPositions($recording_stack);
+            $circle = self::getCircleContainingAllPositions($recording_stack);
             $fixations[] = [
               'center_position' => $circle['center_position'],
               'start_time' => $recording_stack[0][2],
