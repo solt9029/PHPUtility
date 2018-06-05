@@ -13,7 +13,7 @@ class Utility {
       $center_position = $positions[0];
     } else if (count($positions) === 2) {
       $radius = self::dist($positions) / 2.0;
-      $center_positions = [(float)($positions[0][0] + $positions[1][0]) / 2.0, (float)($positions[0][1] + $positions[1][1]) / 2.0];
+      $center_position = [(float)($positions[0][0] + $positions[1][0]) / 2.0, (float)($positions[0][1] + $positions[1][1]) / 2.0];
     } else {
       for ($first_index = 0; $first_index < count($positions); $first_index++) {
         for ($second_index = $first_index + 1; $second_index < count($positions); $second_index++) {
