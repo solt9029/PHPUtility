@@ -9,11 +9,16 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
     "autoload": {
         "psr-4": {
             "Solt9029\\": "src"
         }
     },
-    "include-path": ["src/"]
+    "include-path": ["src/"],
+    "scripts": {
+        "test": "phpunit"
+    }
 }
