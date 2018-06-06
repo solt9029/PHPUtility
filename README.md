@@ -7,3 +7,19 @@
 # 概要
 
 - 便利な関数の寄せ集め
+
+# 使い方
+
+- install
+
+```
+composer require solt9029/php-utility:dev-master
+```
+
+- coding
+
+```php
+require_once('vendor/autoload.php');
+use Solt9029\Utility;
+Utility::dist([[0, 0], [10, 10]]);
+```
