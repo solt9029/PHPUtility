@@ -40,8 +40,9 @@ class Utility {
   }
 
   // 返値：点が指定した円に含まれるかどうか（boolean）
+  // TODO：$radius + 0.01は結構雑なのでどうにかしたい
   public static function isWithinCircle($center_position, $radius, $target_position) {
-    if (self::dist([$target_position, $center_position]) <= $radius) {
+    if (self::dist([$target_position, $center_position]) <= $radius + 0.01) {
       return true;
     }
     return false;
