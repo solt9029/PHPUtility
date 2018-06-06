@@ -112,6 +112,9 @@ class Utility {
   // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
   public static function getFixationCount($dpi, $precision, $distance, $flick, $min_duration, $filename) {
     $fixations = self::getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename);
+    if ($fixations === null) {
+      return null;
+    }
     return count($fixations);
   }
 
