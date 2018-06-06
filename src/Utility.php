@@ -129,6 +129,17 @@ class Utility {
   // 引数：$dpiは1インチ当たりのドット数，$precisionは計測誤差（度），
   // $distanceは目からディスプレイまでの距離（cm），$flickは固視微動（度），
   // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
+  public static function getSecondFixation($dpi, $precision, $distance, $flick, $min_duration, $filename) {
+    $fixations = self::getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename);
+    if (count($fixations) < 2) {
+      return null;
+    }
+    return $fixations[1];
+  }
+
+  // 引数：$dpiは1インチ当たりのドット数，$precisionは計測誤差（度），
+  // $distanceは目からディスプレイまでの距離（cm），$flickは固視微動（度），
+  // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
   public static function getFixations($dpi, $precision, $distance, $flick, $min_duration, $filename) {
     $dpc = $dpi / 2.54; // 1センチ当たりのドット数
     $precision_error_range_cm = $distance * tan(deg2rad($precision)); // 計測誤差範囲（cm）
