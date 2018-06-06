@@ -40,16 +40,16 @@ class UtilityTest extends PHPUnit\Framework\TestCase {
       [$center_position[0] + $radius, $center_position[1]]
     ];
 
-    for ($i = 0; $i < 10; $i++) {
-      $degree = rand(0, 360);
-      $distance = rand(0, $radius);
-      $x = cos(deg2rad($degree)) * $distance;
-      $y = sin(deg2rad($degree)) * $distance;
-      $positions[] = [$center_position[0] + $x, $center_position[1] + $y];
-    }
+    // for ($i = 0; $i < 10; $i++) {
+    //   $degree = rand(0, 360);
+    //   $distance = rand(0, $radius);
+    //   $x = cos(deg2rad($degree)) * $distance;
+    //   $y = sin(deg2rad($degree)) * $distance;
+    //   $positions[] = [$center_position[0] + $x, $center_position[1] + $y];
+    // }
 
     $circle = Utility::getCircleContainingAllPositions($positions);
-    $this->assertEquals(50, $circle['radius']);
+    $this->assertEquals($radius, $circle['radius']);
     $this->assertEquals($center_position, $circle['center_position']);
   }
 
