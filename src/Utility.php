@@ -126,6 +126,26 @@ class Utility {
     }
   }
 
+  // 引数：ディレクトリの名前
+  // 返値：そのディレクトリの中にあるファイル全て（リカーシブ）の配列
+  public static function getFileList($dir) {
+    $files = scandir($dir);
+    $files = array_filter($files, function ($file) {
+      return !in_array($file, array('.', '..'));
+    });
+    $list = array();
+    foreach ($files as $file) {
+      $fullpath = rtrim($dir, '/') . '/' . $file;
+      if (is_file($fullpath)) {
+        $list[] = $fullpath;
+      }
+      if (is_dir($fullpath)) {
+        $list = array_merge($list, getFileList($fullpath));
+      }
+    }
+    return $list;
+  }
+
   // 引数：$dpiは1インチ当たりのドット数，$precisionは計測誤差（度），
   // $distanceは目からディスプレイまでの距離（cm），$flickは固視微動（度），
   // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
