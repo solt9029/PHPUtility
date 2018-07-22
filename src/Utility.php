@@ -140,7 +140,7 @@ class Utility {
         $list[] = $fullpath;
       }
       if (is_dir($fullpath)) {
-        $list = array_merge($list, getFileList($fullpath));
+        $list = array_merge($list, self::getFileList($fullpath));
       }
     }
     return $list;
