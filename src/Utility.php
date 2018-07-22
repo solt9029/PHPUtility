@@ -108,6 +108,24 @@ class Utility {
     return sqrt(pow($x_dist, 2) + pow($y_dist, 2));
   }
 
+  // 引数：$fileは作りたいファイル名
+  // 返値：できたかどうか
+  public static function createFile($file) {
+    // ファイルが既に存在する場合
+    if (!empty($file) && is_readable($file)) {
+      return true;
+    } else {
+      // 最後がスラッシュで終わる場合
+      if (substr($file, -1) === '/') {
+        return mkdir($file, 0777, true);
+      } else {
+        $path = pathinfo($file);
+        // ディレクトリがあればファイルだけ作成、無ければディレクトリ＋ファイルを作成
+        return is_readable($path['dirname']) ? touch($file) : (mkdir($path['dirname'], 0777, true) && touch($file));
+      }
+    }
+  }
+
   // 引数：$dpiは1インチ当たりのドット数，$precisionは計測誤差（度），
   // $distanceは目からディスプレイまでの距離（cm），$flickは固視微動（度），
   // $min_durationは注視したとする最低時間（ミリ秒），$filenameは読み込むCSVファイル（1列目X座標2列目Y座標3列目タイムスタンプ（ミリ秒））
